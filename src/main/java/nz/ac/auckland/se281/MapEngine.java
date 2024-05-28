@@ -117,5 +117,11 @@ public class MapEngine {
 
     // get the ending country
     Country destinationCountry = inputCountry(MessageCli.INSERT_DESTINATION);
+
+    // if the source and destination countries are the same, print a message and return
+    if (sourceCountry.equals(destinationCountry)) {
+      MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
+      return;
+    }
   }
 }
