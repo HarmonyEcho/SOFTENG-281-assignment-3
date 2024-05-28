@@ -140,7 +140,7 @@ public class MapEngine {
 
           // loop back through the path until the source country is reached.
           while (country != sourceCountry) {
-            route.add(destinationCountry); // add country to the route
+            route.add(country); // add country to the route
             country = paths.get(country); // set country to the next country in the path
           }
           if (!sourceCountry.equals(destinationCountry)) {
@@ -151,8 +151,8 @@ public class MapEngine {
           java.util.Collections.reverse(route);
           return route;
 
-          // otherwise, if the country i has not been visited
-        } else if (!visited.contains(country)) {
+          // else if the country visiting has not already been visited
+        } else if (!visited.contains(visiting)) {
           paths.put(visiting, country);
           visited.add(visiting);
           queue.add(visiting);
