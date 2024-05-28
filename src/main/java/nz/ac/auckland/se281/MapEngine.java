@@ -97,5 +97,30 @@ public class MapEngine {
   }
 
   /** this method is invoked when the user run the command route. */
-  public void showRoute() {}
+  public void showRoute() {
+
+    // get the starting country
+    Country originCountry = null;
+    while (originCountry == null) {
+      MessageCli.INSERT_SOURCE.printMessage();
+      String countryName = Utils.scanner.nextLine();
+      try {
+        originCountry = this.getCountryByName(countryName);
+      } catch (InvalidCountryException e) {
+        System.out.println(e.getMessage());
+      }
+    }
+
+    // get the ending country
+    Country destinationCountry = null;
+    while (destinationCountry == null) {
+      MessageCli.INSERT_SOURCE.printMessage();
+      String countryName = Utils.scanner.nextLine();
+      try {
+        destinationCountry = this.getCountryByName(countryName);
+      } catch (InvalidCountryException e) {
+        System.out.println(e.getMessage());
+      }
+    }
+  }
 }
