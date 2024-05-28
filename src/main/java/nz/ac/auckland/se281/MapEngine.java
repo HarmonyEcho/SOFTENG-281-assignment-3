@@ -186,11 +186,23 @@ public class MapEngine {
 
     ArrayList<Country> route = findRoute(sourceCountry, destinationCountry);
     ArrayList<String> countryNameList = new ArrayList<>();
+    ArrayList<String> continentNameList = new ArrayList<>();
 
+    // loop through every country in the route
     for (int i = 0; i < route.size(); i++) {
-      countryNameList.add(route.get(i).getName());
+      Country country = route.get(i);
+
+      // add the country name to the list
+      countryNameList.add(country.getName());
+
+      // if the continent is not already on the list, add it to the list
+      String continent = country.getContinent();
+      if (!continentNameList.contains(continent)) {
+        continentNameList.add(continent);
+      }
     }
 
     MessageCli.ROUTE_INFO.printMessage(countryNameList.toString());
+    MessageCli.CONTINENT_INFO.printMessage(continentNameList.toString());
   }
 }
