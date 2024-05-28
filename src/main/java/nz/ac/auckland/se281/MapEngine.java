@@ -53,9 +53,9 @@ public class MapEngine {
   }
 
   /**
-   * Returns the Country object corresponding to the name String given. This method will set every
-   * character to lowercase, except for the first letter of each word. If no country matching the
-   * given name is found, an InvalidCountryException will be thrown and null will be returned.
+   * Returns the Country object corresponding to the name String given. This method will capitalise
+   * the first letter of each word. If no country matching the given name is found, an
+   * InvalidCountryException will be thrown and null will be returned.
    *
    * @param countryName the name of the country to find.
    * @return the corresponding Country object, if any is found.
@@ -64,7 +64,7 @@ public class MapEngine {
   private Country getCountryByName(String countryName) throws InvalidCountryException {
 
     // set every letter to lowercase, then capitalise the first letter of each word
-    countryName = Utils.capitalizeFirstLetterOfEachWord(countryName.toLowerCase());
+    countryName = Utils.capitalizeFirstLetterOfEachWord(countryName);
     Country country = countryMap.get(countryName);
 
     // if no matching country is found, throw an exception
