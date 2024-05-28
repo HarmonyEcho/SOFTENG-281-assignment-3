@@ -74,53 +74,48 @@ public class MapEngine {
     return country;
   }
 
-  /** this method is invoked when the user run the command info-country. */
-  public void showInfoCountry() {
+  /**
+   * Prompts the user to enter the name of a country using the selected message, and will warn the
+   * user until a valid country name is input.
+   *
+   * @param message a value of MessageCli to use to prompt the user. Only messages that do not
+   *     require arguments can be used.
+   * @return a Country object corresponding to the user input.
+   */
+  private Country inputCountry(MessageCli message) {
 
-    // repeat until the user inputs a valid country
+    // prompt the user to input a country's name
+    message.printMessage();
+
+    // repeat until the user inputs a valid country name
     Country country = null;
     while (country == null) {
-
-      // prompts and recieves user input
-      MessageCli.INSERT_COUNTRY.printMessage();
       String countryName = Utils.scanner.nextLine();
 
-      // print the country's info, or if country is invalid print an error message
+      // get the country object, or if country name is invalid print an error message
       try {
         country = this.getCountryByName(countryName);
-        MessageCli.COUNTRY_INFO.printMessage(
-            country.getName(), country.getContinent(), Integer.toString(country.getTax()));
       } catch (InvalidCountryException e) {
         System.out.println(e.getMessage());
       }
     }
+    return country;
+  }
+
+  /** this method is invoked when the user run the command info-country. */
+  public void showInfoCountry() {
+    Country country = inputCountry(MessageCli.INSERT_COUNTRY);
+    MessageCli.COUNTRY_INFO.printMessage(
+        country.getName(), country.getContinent(), Integer.toString(country.getTax()));
   }
 
   /** this method is invoked when the user run the command route. */
   public void showRoute() {
 
     // get the starting country
-    Country originCountry = null;
-    while (originCountry == null) {
-      MessageCli.INSERT_SOURCE.printMessage();
-      String countryName = Utils.scanner.nextLine();
-      try {
-        originCountry = this.getCountryByName(countryName);
-      } catch (InvalidCountryException e) {
-        System.out.println(e.getMessage());
-      }
-    }
+    Country sourceCountry = inputCountry(MessageCli.INSERT_SOURCE);
 
     // get the ending country
-    Country destinationCountry = null;
-    while (destinationCountry == null) {
-      MessageCli.INSERT_SOURCE.printMessage();
-      String countryName = Utils.scanner.nextLine();
-      try {
-        destinationCountry = this.getCountryByName(countryName);
-      } catch (InvalidCountryException e) {
-        System.out.println(e.getMessage());
-      }
-    }
+    Country destinationCountry = inputCountry(MessageCli.INSERT_DESTINATION);
   }
 }
