@@ -13,7 +13,7 @@ public class MapEngine {
   private HashMap<Country, ArrayList<Country>> adjMap =
       new HashMap<>(); // Key: Country object, Value: Arraylist of connected countries
 
-  /** Constructor method */
+  /** Constructor method. */
   public MapEngine() {
     // add other code here if you want
     loadMap(); // keep this mehtod invocation

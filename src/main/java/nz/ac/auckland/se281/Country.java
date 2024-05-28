@@ -7,7 +7,7 @@ public class Country {
   private int tax; // tax to travel into the country
 
   /**
-   * Constructor method
+   * Constructor method.
    *
    * @param name name of the country
    * @param continent name of the continent containing the country
