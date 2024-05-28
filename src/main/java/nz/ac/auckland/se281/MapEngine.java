@@ -2,7 +2,9 @@ package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /** This class is the main entry point. */
 public class MapEngine {
@@ -100,6 +102,63 @@ public class MapEngine {
       }
     }
     return country;
+  }
+
+  /**
+   * Finds the shortest route between two countries, by number of countries, and returns an array
+   * containing the list of countries on the route in order. Uses breadth-first search.
+   *
+   * @param sourceCountry Country to start the route from.
+   * @param destinationCountry Country to finish in.
+   * @return Arraylist of the countries in the shortest route between the source and end countries,
+   *     in order, including the source and end countries. If no valid route is found, returns null.
+   */
+  private ArrayList<Country> findRoute(Country sourceCountry, Country destinationCountry) {
+    HashMap<Country, Country> paths =
+        new HashMap<>(); // value is the country where the key was traversed from.
+    List<Country> visited = new ArrayList<>(); // list of countries that have already been 'visited'
+    Queue<Country> queue = new LinkedList<>(); // queue of countries to visit
+
+    // add the source country to the queue of countries to visit and the list of countries visited
+    queue.add(sourceCountry);
+    visited.add(sourceCountry);
+    while (!queue.isEmpty()) {
+
+      // pop the front country in the queue
+      Country country = queue.poll();
+
+      // loop through each country adjacent to the popped country
+      for (Country i : adjMap.get(country)) {
+
+        // if the destination country has been reached
+        if (i.equals(destinationCountry)) {
+          // initialise arraylist of countries on the route
+          ArrayList<Country> route = new ArrayList<>();
+          paths.put(i, country);
+          country = destinationCountry;
+
+          // loop back through the path until the source country is reached.
+          while (country != sourceCountry) {
+            route.add(destinationCountry); // add country to the route
+            country = paths.get(country); // set country to the next country in the path
+          }
+          if (!sourceCountry.equals(destinationCountry)) {
+            route.add(sourceCountry);
+          }
+
+          // flip the order of elements from (destination -> source) to (source -> destination)
+          java.util.Collections.reverse(route);
+          return route;
+
+          // otherwise, if the country i has not been visited
+        } else if (!visited.contains(country)) {
+          paths.put(i, country);
+          visited.add(i);
+          queue.add(i);
+        }
+      }
+    }
+    return null; // no valid route found
   }
 
   /** this method is invoked when the user run the command info-country. */
