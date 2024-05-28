@@ -128,13 +128,14 @@ public class MapEngine {
       Country country = queue.poll();
 
       // loop through each country adjacent to the popped country
-      for (Country i : adjMap.get(country)) {
+      for (int i = 0; i < adjMap.get(country).size(); i++) {
+        Country visiting = adjMap.get(country).get(i);
 
         // if the destination country has been reached
-        if (i.equals(destinationCountry)) {
+        if (visiting.equals(destinationCountry)) {
           // initialise arraylist of countries on the route
           ArrayList<Country> route = new ArrayList<>();
-          paths.put(i, country);
+          paths.put(visiting, country);
           country = destinationCountry;
 
           // loop back through the path until the source country is reached.
@@ -152,9 +153,9 @@ public class MapEngine {
 
           // otherwise, if the country i has not been visited
         } else if (!visited.contains(country)) {
-          paths.put(i, country);
-          visited.add(i);
-          queue.add(i);
+          paths.put(visiting, country);
+          visited.add(visiting);
+          queue.add(visiting);
         }
       }
     }
@@ -182,5 +183,14 @@ public class MapEngine {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
       return;
     }
+
+    ArrayList<Country> route = findRoute(sourceCountry, destinationCountry);
+    ArrayList<String> countryNameList = new ArrayList<>();
+
+    for (int i = 0; i < route.size(); i++) {
+      countryNameList.add(route.get(i).getName());
+    }
+
+    MessageCli.ROUTE_INFO.printMessage(countryNameList.toString());
   }
 }
