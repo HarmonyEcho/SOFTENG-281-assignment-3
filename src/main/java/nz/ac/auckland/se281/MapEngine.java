@@ -34,9 +34,9 @@ public class MapEngine {
 
     // loop through each element of countryList
     for (int i = 0; i < countryList.size(); i++) {
-      String[] details = countryList.get(i).split(",", 3); // continent, country,  taxes
+      String[] details = countryList.get(i).split(",", 3); // country, continent,  taxes
 
-      countryMap.put(details[1], new Country(details[1], details[0], Integer.parseInt(details[2])));
+      countryMap.put(details[0], new Country(details[0], details[1], Integer.parseInt(details[2])));
     }
 
     // loop through element of adjacencies
@@ -54,7 +54,15 @@ public class MapEngine {
 
   /** this method is invoked when the user run the command info-country. */
   public void showInfoCountry() {
-    // add code here
+    MessageCli.INSERT_COUNTRY.printMessage(); // prompts user input
+
+    // recieves user input and formats the capitalisation
+    String countryName = Utils.scanner.nextLine();
+    countryName = Utils.capitalizeFirstLetterOfEachWord(countryName.toLowerCase());
+
+    Country country = countryMap.get(countryName);
+    MessageCli.COUNTRY_INFO.printMessage(
+        country.getName(), country.getContinent(), Integer.toString(country.getTax()));
   }
 
   /** this method is invoked when the user run the command route. */
