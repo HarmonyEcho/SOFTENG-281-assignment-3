@@ -187,6 +187,7 @@ public class MapEngine {
     ArrayList<Country> route = findRoute(sourceCountry, destinationCountry);
     ArrayList<String> countryNameList = new ArrayList<>();
     ArrayList<String> continentNameList = new ArrayList<>();
+    int totalTaxes = 0;
 
     // loop through every country in the route
     for (int i = 0; i < route.size(); i++) {
@@ -200,9 +201,15 @@ public class MapEngine {
       if (!continentNameList.contains(continent)) {
         continentNameList.add(continent);
       }
+
+      // add tax to the total, except for the source country
+      if (i != 0) {
+        totalTaxes += country.getTax();
+      }
     }
 
     MessageCli.ROUTE_INFO.printMessage(countryNameList.toString());
     MessageCli.CONTINENT_INFO.printMessage(continentNameList.toString());
+    MessageCli.TAX_INFO.printMessage(Integer.toString(totalTaxes));
   }
 }
