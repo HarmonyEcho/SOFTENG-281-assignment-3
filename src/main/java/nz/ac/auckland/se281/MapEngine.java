@@ -52,17 +52,48 @@ public class MapEngine {
     }
   }
 
+  /**
+   * Returns the Country object corresponding to the name String given. This method will set every
+   * character to lowercase, except for the first letter of each word. If no country matching the
+   * given name is found, an InvalidCountryException will be thrown and null will be returned.
+   *
+   * @param countryName the name of the country to find.
+   * @return the corresponding Country object, if any is found.
+   * @throws InvalidCountryException thrown when no country matching the name given is found.
+   */
+  private Country getCountryByName(String countryName) throws InvalidCountryException {
+
+    // set every letter to lowercase, then capitalise the first letter of each word
+    countryName = Utils.capitalizeFirstLetterOfEachWord(countryName.toLowerCase());
+    Country country = countryMap.get(countryName);
+
+    // if no matching country is found, throw an exception
+    if (country == null) {
+      throw new InvalidCountryException(countryName);
+    }
+    return country;
+  }
+
   /** this method is invoked when the user run the command info-country. */
   public void showInfoCountry() {
-    MessageCli.INSERT_COUNTRY.printMessage(); // prompts user input
 
-    // recieves user input and formats the capitalisation
-    String countryName = Utils.scanner.nextLine();
-    countryName = Utils.capitalizeFirstLetterOfEachWord(countryName.toLowerCase());
+    // repeat until the user inputs a valid country
+    Country country = null;
+    while (country == null) {
 
-    Country country = countryMap.get(countryName);
-    MessageCli.COUNTRY_INFO.printMessage(
-        country.getName(), country.getContinent(), Integer.toString(country.getTax()));
+      // prompts and recieves user input
+      MessageCli.INSERT_COUNTRY.printMessage();
+      String countryName = Utils.scanner.nextLine();
+
+      // print the country's info, or if country is invalid print an error message
+      try {
+        country = this.getCountryByName(countryName);
+        MessageCli.COUNTRY_INFO.printMessage(
+            country.getName(), country.getContinent(), Integer.toString(country.getTax()));
+      } catch (InvalidCountryException e) {
+        System.out.println(e.getMessage());
+      }
+    }
   }
 
   /** this method is invoked when the user run the command route. */
